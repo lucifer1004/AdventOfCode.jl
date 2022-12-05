@@ -13,7 +13,7 @@ function get_input(year, day)
     session = cfg["AOC_SESSION"]
 
     r = HTTP.get("https://adventofcode.com/$year/day/$day/input", cookies=Dict("session" => session))
-    return strip(String(r.body))
+    return rstrip(String(r.body))
 end
 
 function submit_answer(year, day, answer, level=1)
