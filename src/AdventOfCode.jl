@@ -39,4 +39,6 @@ function parse_input(input::AbstractString)
     return @pipe input |> split(_, "\n")
 end
 
+include("data_structures.jl")
+
 end
