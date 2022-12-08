@@ -1,6 +1,6 @@
-authors = ["Gabriel Wu <wuzihua@pku.edu.cn>"]
 name = "AdventOfCode"
 uuid = "ec480b64-8d68-453c-9e84-9dbf6ce847d6"
+authors = ["Gabriel Wu <wuzihua@pku.edu.cn>"]
 version = "0.1.0"
 
 [deps]
@@ -13,6 +13,8 @@ HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 IterTools = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
 JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+MD5 = "6ac74813-4b46-53a4-afec-0b5dc9d7885c"
 MLStyle = "d8e11817-5142-5d16-987a-aa16d5891078"
 Mods = "7475f97c-0381-53b1-977b-4c60186c8d62"
 Pipe = "b98c9c47-44ae-5843-9183-064241ee97a0"
+Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
