@@ -11,7 +11,7 @@ function get_input(year, day)
         return "Set variable \$day to make this work."
     end
 
-    cfg = DotEnv.config(path="../../.env")
+    cfg = DotEnv.config(joinpath(@__DIR__, "..", ".env"))
     session = cfg["AOC_SESSION"]
 
     r = HTTP.get("https://adventofcode.com/$year/day/$day/input", cookies=Dict("session" => session))
