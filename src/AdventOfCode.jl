@@ -7,7 +7,12 @@ using DotEnv, HTTP, Pipe, Reexport
 export get_input, parse_input, submit_answer
 
 function get_input(year, day)
-    filename = joinpath(@__DIR__, "..", string(year), "inputs", "$day.txt")
+    inputdir = joinpath(@__DIR__, "..", string(year), "inputs")
+    if !ispath(inputdir)
+        mkpath(inputdir)
+    end
+
+    filename = joinpath(inputdir, "$day.txt")
     if !isfile(filename)
         cfg = DotEnv.config(joinpath(@__DIR__, "..", ".env"))
         session = cfg["AOC_SESSION"]
