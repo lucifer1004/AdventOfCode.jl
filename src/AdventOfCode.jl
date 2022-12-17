@@ -6,14 +6,14 @@ using DotEnv, HTTP, Pipe, Reexport
 
 export get_input, parse_input, submit_answer
 
-function get_input(year, day)
+function get_input(year, day; force=false)
     inputdir = joinpath(@__DIR__, "..", string(year), "inputs")
     if !ispath(inputdir)
         mkpath(inputdir)
     end
 
     filename = joinpath(inputdir, "$day.txt")
-    if !isfile(filename)
+    if !isfile(filename) || force
         cfg = DotEnv.config(joinpath(@__DIR__, "..", ".env"))
         session = cfg["AOC_SESSION"]
         r = HTTP.get("https://adventofcode.com/$year/day/$day/input", cookies=Dict("session" => session))
