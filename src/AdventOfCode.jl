@@ -7,15 +7,15 @@ using DotEnv, HTTP, Pipe, Reexport
 export get_input, parse_input, submit_answer
 
 function get_input(year, day)
-    if day == 0
-        return "Set variable \$day to make this work."
+    filename = joinpath(@__DIR__, "..", string(year), "inputs", "$day.txt")
+    if !isfile(filename)
+        cfg = DotEnv.config(joinpath(@__DIR__, "..", ".env"))
+        session = cfg["AOC_SESSION"]
+        r = HTTP.get("https://adventofcode.com/$year/day/$day/input", cookies=Dict("session" => session))
+        write(filename, rstrip(String(r.body)))
     end
 
-    cfg = DotEnv.config(joinpath(@__DIR__, "..", ".env"))
-    session = cfg["AOC_SESSION"]
-
-    r = HTTP.get("https://adventofcode.com/$year/day/$day/input", cookies=Dict("session" => session))
-    return rstrip(String(r.body))
+    return read(filename, String)
 end
 
 function submit_answer(year, day, answer, level=1)
