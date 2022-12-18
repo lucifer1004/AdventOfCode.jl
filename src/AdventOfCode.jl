@@ -45,5 +45,6 @@ function parse_input(input::AbstractString)
 end
 
 include("data_structures.jl")
+include("AoC2016.jl")
 
 end
