@@ -2,9 +2,14 @@ module AdventOfCode
 
 using DotEnv, HTTP, Pipe, Reexport
 
-@reexport using BenchmarkTools, Combinatorics, DataStructures, Graphs, GraphPlot, IterTools, JSON3, LinearAlgebra, MD5, MLStyle, Mods, OffsetArrays
+@reexport using BenchmarkTools, Combinatorics, DataStructures, Graphs, GraphPlot, IterTools, JSON3, LinearAlgebra, MD5, MLStyle, Mods, OffsetArrays, StaticArrays
 
-export get_input, parse_input, submit_answer
+export Atomic, get_input, parse_input, submit_answer
+
+
+mutable struct Atomic{T}
+    @atomic x::T
+end
 
 function get_input(year, day; force=false)
     inputdir = joinpath(@__DIR__, "..", string(year), "inputs")
@@ -28,9 +33,8 @@ function submit_answer(year, day, answer, level=1)
         return "Set variable \$day to make this work."
     end
 
-    cfg = DotEnv.config(path="../../.env")
+    cfg = DotEnv.config(joinpath(@__DIR__, "..", ".env"))
     session = cfg["AOC_SESSION"]
-
     r = HTTP.post("https://adventofcode.com/$year/day/$day/answer",
         [
             "Content-Type" => "application/x-www-form-urlencoded",
