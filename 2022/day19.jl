@@ -63,7 +63,7 @@ end
 
 function part_one(input)
     bps = preprocess(input)
-    ans = Atomic(0)
+    ans = zeros(Int, length(bps))
     Threads.@threads for i in eachindex(bps)
         bp = bps[i]
 
@@ -75,15 +75,15 @@ function part_one(input)
         MAXORE = 2 * ORE
         MAXCLAY = 2 * CLAY
         MAXOBSIDIAN = 2 * OBSIDIAN
-        @atomic ans.x += i * solve(bp, T, ORE, CLAY, OBSIDIAN, MAXORE, MAXCLAY, MAXOBSIDIAN)
+        ans[i] = solve(bp, T, ORE, CLAY, OBSIDIAN, MAXORE, MAXCLAY, MAXOBSIDIAN)
     end
 
-    return ans.x
+    return sum(i * x for (i, x) in enumerate(ans))
 end
 
 function part_two(input)
     bps = preprocess(input)
-    ans = Atomic(1)
+    ans = zeros(Int, length(bps))
     Threads.@threads for i in eachindex(bps)
         bp = bps[i]
 
@@ -95,10 +95,10 @@ function part_two(input)
         MAXORE = 2 * ORE
         MAXCLAY = 2 * CLAY
         MAXOBSIDIAN = 2 * OBSIDIAN
-        @atomic ans.x *= solve(bp, T, ORE, CLAY, OBSIDIAN, MAXORE, MAXCLAY, MAXOBSIDIAN)
+        ans[i] = solve(bp, T, ORE, CLAY, OBSIDIAN, MAXORE, MAXCLAY, MAXOBSIDIAN)
     end
 
-    return ans.x
+    return prod(ans)
 end
 
 function main()
