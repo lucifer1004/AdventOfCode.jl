@@ -56,12 +56,14 @@ function exec!(mem::AbstractVector{Int}; inputs::AbstractVector{Int}=Int[], auto
         elseif opcode.op == 3
             target = mem[ptr+1]
 
-            if auto
-                value = inputs[input_ptr]
-                input_ptr += 1
-            else
-                value = parse(Int, readline())
+            if input_ptr > length(inputs)
+                s = readline(; keep=true)
+                append!(inputs, Int.(collect(s)))
             end
+
+            @assert input_ptr <= length(inputs)
+            value = inputs[input_ptr]
+            input_ptr += 1
 
             @assert opcode.modes[1] != 1
             target += (opcode.modes[1] == 2 ? relative_base : 0)
@@ -70,10 +72,13 @@ function exec!(mem::AbstractVector{Int}; inputs::AbstractVector{Int}=Int[], auto
             src = mem[ptr+1]
             src = parse_arg(mem, src, opcode.modes[1], relative_base)
 
-            if auto
-                push!(outputs, src)
-            else
-                print(src)
+            push!(outputs, src)
+            if !auto
+                if 10 <= src <= 127
+                    print(Char(src))
+                else
+                    println("\n", src)
+                end
             end
         elseif opcode.op == 5
             src, target = mem[ptr+1:ptr+2]
