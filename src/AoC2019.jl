@@ -2,7 +2,7 @@ module AoC2019
 
 using ..AdventOfCode
 
-export exec!
+export IntCodeMachine, exec!, ishalted
 
 struct OpCode
     op::Int
@@ -27,14 +27,49 @@ function parse_arg(mem, raw, mode, relative_base)
     end
 end
 
-function exec!(mem::AbstractVector{Int}; inputs::AbstractVector{Int}=Int[], auto=true, maximum_size=100000)
+mutable struct IntCodeMachine
+    mem::Vector{Int}
+    inputs::Vector{Int}
+    outputs::Vector{Int}
+    ptr::Int
+    input_ptr::Int
+    relative_base::Int
+    auto::Bool
+    halted::Bool
+end
+
+ishalted(machine::IntCodeMachine) = machine.halted
+
+function IntCodeMachine(mem::AbstractVector{Int}; inputs::AbstractVector{Int}=Int[], auto=true, maximum_size=100000)
     n = length(mem)
     append!(mem, zeros(Int, maximum_size - n))
-    mem = OffsetArray(mem, 0:maximum_size-1)
     ptr = 0
     input_ptr = 1
     relative_base = 0
     outputs = Int[]
+    return IntCodeMachine(mem, inputs, outputs, ptr, input_ptr, relative_base, auto, false)
+end
+
+function exec!(mem::AbstractVector{Int}; inputs::AbstractVector{Int}=Int[], auto=true, maximum_size=100000)
+    machine = IntCodeMachine(mem::AbstractVector{Int}; inputs=inputs, auto=auto, maximum_size=maximum_size)
+    exec!(machine)
+    return machine.outputs
+end
+
+function exec!(machine::IntCodeMachine)
+    if ishalted(machine)
+        return
+    end
+
+    n = length(machine.mem)
+    mem = OffsetArray(machine.mem, 0:n-1)
+    ptr = machine.ptr
+    inputs = machine.inputs
+    input_ptr = machine.input_ptr
+    relative_base = machine.relative_base
+    outputs = machine.outputs
+    auto = machine.auto
+
     while true
         opcode = OpCode(mem[ptr])
         if opcode.op == 1
@@ -57,8 +92,13 @@ function exec!(mem::AbstractVector{Int}; inputs::AbstractVector{Int}=Int[], auto
             target = mem[ptr+1]
 
             if input_ptr > length(inputs)
-                s = readline(; keep=true)
-                append!(inputs, Int.(collect(s)))
+                if !auto
+                    s = readline(; keep=true)
+                    append!(inputs, Int.(collect(s)))
+                else
+                    # Need more input! Snapshot and break!
+                    break
+                end
             end
 
             @assert input_ptr <= length(inputs)
@@ -119,13 +159,18 @@ function exec!(mem::AbstractVector{Int}; inputs::AbstractVector{Int}=Int[], auto
             src = parse_arg(mem, src, opcode.modes[1], relative_base)
             relative_base += src
         elseif opcode.op == 99
+            machine.halted = true
             break
         end
 
         ptr += OP_LEN[opcode.op]
     end
 
-    return outputs
+    machine.ptr = ptr
+    machine.input_ptr = input_ptr
+    machine.relative_base = relative_base
+
+    return nothing
 end
 
 end
