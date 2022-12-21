@@ -50,5 +50,6 @@ end
 
 include("data_structures.jl")
 include("AoC2016.jl")
+include("AoC2019.jl")
 
 end
