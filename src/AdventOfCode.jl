@@ -45,7 +45,7 @@ function submit_answer(year, day, answer, level=1)
 end
 
 function parse_input(input::AbstractString)
-    return @pipe input |> split(_, "\n")
+    return @pipe input |> split(_, "\n") |> map(string, _)
 end
 
 include("data_structures.jl")
