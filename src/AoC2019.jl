@@ -6,7 +6,7 @@ export IntCodeMachine, exec!, ishalted
 
 struct OpCode
     op::Int
-    modes::NTuple{3,Int}
+    modes::NTuple{3, Int}
 end
 
 function OpCode(code::Int)
@@ -23,7 +23,7 @@ function parse_arg(mem, raw, mode, relative_base)
     elseif mode == 1
         return raw
     elseif mode == 2
-        return mem[raw+relative_base]
+        return mem[raw + relative_base]
     end
 end
 
@@ -40,7 +40,10 @@ end
 
 ishalted(machine::IntCodeMachine) = machine.halted
 
-function IntCodeMachine(mem::AbstractVector{Int}; inputs::AbstractVector{Int}=Int[], auto=true, maximum_size=100000)
+function IntCodeMachine(mem::AbstractVector{Int};
+        inputs::AbstractVector{Int} = Int[],
+        auto = true,
+        maximum_size = 100000)
     n = length(mem)
     append!(mem, zeros(Int, maximum_size - n))
     ptr = 0
@@ -50,8 +53,14 @@ function IntCodeMachine(mem::AbstractVector{Int}; inputs::AbstractVector{Int}=In
     return IntCodeMachine(mem, inputs, outputs, ptr, input_ptr, relative_base, auto, false)
 end
 
-function exec!(mem::AbstractVector{Int}; inputs::AbstractVector{Int}=Int[], auto=true, maximum_size=100000)
-    machine = IntCodeMachine(mem::AbstractVector{Int}; inputs=inputs, auto=auto, maximum_size=maximum_size)
+function exec!(mem::AbstractVector{Int};
+        inputs::AbstractVector{Int} = Int[],
+        auto = true,
+        maximum_size = 100000)
+    machine = IntCodeMachine(mem::AbstractVector{Int};
+        inputs = inputs,
+        auto = auto,
+        maximum_size = maximum_size)
     exec!(machine)
     return machine.outputs
 end
@@ -62,7 +71,7 @@ function exec!(machine::IntCodeMachine)
     end
 
     n = length(machine.mem)
-    mem = OffsetArray(machine.mem, 0:n-1)
+    mem = OffsetArray(machine.mem, 0:(n - 1))
     ptr = machine.ptr
     inputs = machine.inputs
     input_ptr = machine.input_ptr
@@ -73,7 +82,7 @@ function exec!(machine::IntCodeMachine)
     while true
         opcode = OpCode(mem[ptr])
         if opcode.op == 1
-            src1, src2, target = mem[ptr+1:ptr+3]
+            src1, src2, target = mem[(ptr + 1):(ptr + 3)]
             src1 = parse_arg(mem, src1, opcode.modes[1], relative_base)
             src2 = parse_arg(mem, src2, opcode.modes[2], relative_base)
 
@@ -81,7 +90,7 @@ function exec!(machine::IntCodeMachine)
             target += (opcode.modes[3] == 2 ? relative_base : 0)
             mem[target] = src1 + src2
         elseif opcode.op == 2
-            src1, src2, target = mem[ptr+1:ptr+3]
+            src1, src2, target = mem[(ptr + 1):(ptr + 3)]
             src1 = parse_arg(mem, src1, opcode.modes[1], relative_base)
             src2 = parse_arg(mem, src2, opcode.modes[2], relative_base)
 
@@ -89,11 +98,11 @@ function exec!(machine::IntCodeMachine)
             target += (opcode.modes[3] == 2 ? relative_base : 0)
             mem[target] = src1 * src2
         elseif opcode.op == 3
-            target = mem[ptr+1]
+            target = mem[ptr + 1]
 
             if input_ptr > length(inputs)
                 if !auto
-                    s = readline(; keep=true)
+                    s = readline(; keep = true)
                     append!(inputs, Int.(collect(s)))
                 else
                     # Need more input! Snapshot and break!
@@ -109,7 +118,7 @@ function exec!(machine::IntCodeMachine)
             target += (opcode.modes[1] == 2 ? relative_base : 0)
             mem[target] = value
         elseif opcode.op == 4
-            src = mem[ptr+1]
+            src = mem[ptr + 1]
             src = parse_arg(mem, src, opcode.modes[1], relative_base)
 
             push!(outputs, src)
@@ -121,7 +130,7 @@ function exec!(machine::IntCodeMachine)
                 end
             end
         elseif opcode.op == 5
-            src, target = mem[ptr+1:ptr+2]
+            src, target = mem[(ptr + 1):(ptr + 2)]
             src = parse_arg(mem, src, opcode.modes[1], relative_base)
             target = parse_arg(mem, target, opcode.modes[2], relative_base)
 
@@ -130,7 +139,7 @@ function exec!(machine::IntCodeMachine)
                 continue
             end
         elseif opcode.op == 6
-            src, target = mem[ptr+1:ptr+2]
+            src, target = mem[(ptr + 1):(ptr + 2)]
             src = parse_arg(mem, src, opcode.modes[1], relative_base)
             target = parse_arg(mem, target, opcode.modes[2], relative_base)
 
@@ -139,7 +148,7 @@ function exec!(machine::IntCodeMachine)
                 continue
             end
         elseif opcode.op == 7
-            src1, src2, target = mem[ptr+1:ptr+3]
+            src1, src2, target = mem[(ptr + 1):(ptr + 3)]
             src1 = parse_arg(mem, src1, opcode.modes[1], relative_base)
             src2 = parse_arg(mem, src2, opcode.modes[2], relative_base)
 
@@ -147,7 +156,7 @@ function exec!(machine::IntCodeMachine)
             target += (opcode.modes[3] == 2 ? relative_base : 0)
             mem[target] = src1 < src2 ? 1 : 0
         elseif opcode.op == 8
-            src1, src2, target = mem[ptr+1:ptr+3]
+            src1, src2, target = mem[(ptr + 1):(ptr + 3)]
             src1 = parse_arg(mem, src1, opcode.modes[1], relative_base)
             src2 = parse_arg(mem, src2, opcode.modes[2], relative_base)
 
@@ -155,7 +164,7 @@ function exec!(machine::IntCodeMachine)
             target += (opcode.modes[3] == 2 ? relative_base : 0)
             mem[target] = src1 == src2 ? 1 : 0
         elseif opcode.op == 9
-            src = mem[ptr+1]
+            src = mem[ptr + 1]
             src = parse_arg(mem, src, opcode.modes[1], relative_base)
             relative_base += src
         elseif opcode.op == 99

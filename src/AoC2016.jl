@@ -4,8 +4,8 @@ export Instruction, exec
 
 mutable struct Instruction
     typ::Int
-    arg1::Union{String,Int}
-    arg2::Union{String,Int,Nothing}
+    arg1::Union{String, Int}
+    arg2::Union{String, Int, Nothing}
 end
 
 function Instruction(line)
@@ -40,7 +40,9 @@ function Instruction(line)
     end
 end
 
-function exec(input, registers=Dict("a" => 0, "b" => 0, "c" => 0, "d" => 0); timeout=100000)
+function exec(input,
+        registers = Dict("a" => 0, "b" => 0, "c" => 0, "d" => 0);
+        timeout = 100000)
     instructions = Instruction.(input)
     i = 1
     t = 0
