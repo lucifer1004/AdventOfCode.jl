@@ -1,9 +1,10 @@
 module AdventOfCode
 
-using DotEnv, HTTP, Pipe, Reexport
+using DotEnv, HTTP, Reexport
 
+@reexport using Pipe: @pipe
 @reexport using BenchmarkTools, Combinatorics, DataStructures, Graphs, GraphPlot, IterTools,
-    JSON3, LinearAlgebra, MD5, MLStyle, Mods, OffsetArrays, StaticArrays
+    JSON3, LinearAlgebra, MD5, MLStyle, Mods, OffsetArrays, StaticArrays, TestItems
 
 export Atomic, get_input, parse_input, submit_answer
 
@@ -53,5 +54,6 @@ include("algorithms.jl")
 include("data_structures.jl")
 include("AoC2016.jl")
 include("AoC2019.jl")
+include("AoC2023.jl")
 
 end
