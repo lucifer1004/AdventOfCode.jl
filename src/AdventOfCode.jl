@@ -49,6 +49,7 @@ function parse_input(input::AbstractString)
     return @pipe input |> split(_, "\n") |> map(string, _)
 end
 
+include("algorithms.jl")
 include("data_structures.jl")
 include("AoC2016.jl")
 include("AoC2019.jl")
