@@ -3,7 +3,8 @@ module AdventOfCode
 using DotEnv, HTTP, Reexport
 
 @reexport using Pipe: @pipe
-@reexport using BenchmarkTools, Combinatorics, DataStructures, Graphs, GraphPlot, IterTools,
+@reexport using BenchmarkTools, Combinatorics, DataInterpolations, DataStructures, Graphs,
+    GraphPlot, IterTools,
     JSON3, LinearAlgebra, MD5, MLStyle, Mods, OffsetArrays, StaticArrays, TestItems
 
 export Atomic, get_input, parse_input, submit_answer
