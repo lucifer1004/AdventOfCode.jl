@@ -24,7 +24,8 @@ end
 
 function solve(bp, T, ORE, CLAY, OBSIDIAN, MAXORE, MAXCLAY, MAXOBSIDIAN)
     # (ra, rb, rc, a, b, c, t)
-    dp = OffsetArray(fill(-1,
+    dp = OffsetArray(
+        fill(-1,
             1:ORE,
             0:CLAY,
             0:OBSIDIAN,

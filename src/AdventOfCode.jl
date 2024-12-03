@@ -4,8 +4,9 @@ using DotEnv, HTTP, Reexport
 
 @reexport using Pipe: @pipe
 @reexport using BenchmarkTools, Combinatorics, DataInterpolations, DataStructures, Graphs,
-    GraphPlot, IterTools,
-    JSON3, LinearAlgebra, MD5, MLStyle, Mods, OffsetArrays, StaticArrays, TestItems
+                GraphPlot, IterTools,
+                JSON3, LinearAlgebra, MD5, MLStyle, Mods, OffsetArrays, StaticArrays,
+                TestItems
 
 export Atomic, get_input, parse_input, submit_answer
 
@@ -40,7 +41,7 @@ function submit_answer(year, day, answer, level = 1)
     session = cfg["AOC_SESSION"]
     r = HTTP.post("https://adventofcode.com/$year/day/$day/answer",
         [
-            "Content-Type" => "application/x-www-form-urlencoded",
+            "Content-Type" => "application/x-www-form-urlencoded"
         ],
         HTTP.escapeuri(Dict("level" => level, "answer" => answer)),
         cookies = Dict("session" => session))
@@ -56,5 +57,6 @@ include("data_structures.jl")
 include("AoC2016.jl")
 include("AoC2019.jl")
 include("AoC2023.jl")
+include("AoC2024.jl")
 
 end
