@@ -11,7 +11,7 @@ mul_pattern = r"mul\(([0-9]{1,3}),([0-9]{1,3})\)"
 function part_one(input)
     return sum(sum(parse(Int, m[1]) * parse(Int, m[2])
                for m in eachmatch(mul_pattern, line))
-               for line in parse_input(input))
+    for line in parse_input(input))
 end
 
 function part_two(input)

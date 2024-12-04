@@ -24,9 +24,14 @@ function get_input(year, day; force = false)
     if !isfile(filename) || force
         cfg = DotEnv.config(joinpath(@__DIR__, "..", ".env"))
         session = cfg["AOC_SESSION"]
-        r = HTTP.get("https://adventofcode.com/$year/day/$day/input",
-            cookies = Dict("session" => session))
-        write(filename, rstrip(String(r.body)))
+        try
+            r = HTTP.get("https://adventofcode.com/$year/day/$day/input",
+                cookies = Dict("session" => session))
+            write(filename, rstrip(String(r.body)))
+        catch e
+            @error "Failed to get input for day $day of $year: $e"
+            return ""
+        end
     end
 
     return read(filename, String)
