@@ -1,6 +1,8 @@
 using AdventOfCode
 
-year = day = input = get_input(year, day)
+year = 2024
+day = 0
+input = get_input(year, day)
 parsed_input = parse_input(input)
 
 sample = """
