@@ -1,6 +1,6 @@
 module AoC2024
 
-for day in 1:10
+for day in 1:11
     filename = joinpath(@__DIR__, "..", "2024", "day$(lpad(day, 2, '0')).jl")
     include(filename)
 end
