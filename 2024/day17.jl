@@ -55,10 +55,7 @@ function rewrite_program(program)
             push!(backward_lines, "if $(combo(program[idx + 1])) % 8 == program[idx]")
             push!(backward_lines, "    for i in 0:$(a_factor - 1)")
             push!(backward_lines,
-                "        ans = dfs_$(hash(program))(a * $(a_factor) + i, b_orig, c_orig, program, idx - 1)")
-            push!(backward_lines, "        if ans != -1")
-            push!(backward_lines, "            return ans")
-            push!(backward_lines, "        end")
+                "        dfs_$(hash(program))(a * $(a_factor) + i, b_orig, c_orig, program, idx - 1, output)")
             push!(backward_lines, "    end")
             push!(backward_lines, "end")
         elseif op == 6
@@ -81,18 +78,20 @@ function rewrite_program(program)
     end"""
 
     dfs_func = """
-    function dfs_$(hash(program))(a, b_orig, c_orig, program, idx)
+    function dfs_$(hash(program))(a::Int, b_orig::Int, c_orig::Int, program::AbstractVector{Int}, idx::Int, output::AbstractVector{Int})
         results = run_program_$(hash(program))(a, b_orig, c_orig, program)
-        if length(results) > length(program)
-            return -1
+        if length(results) == length(program)
+            if all(results .== program)
+                push!(output, a)
+            else
+                return
+            end
         end
-        if length(results) == length(program) && all(results .== program)
-            return a
+        if idx <= 0
+            return
         end
-        
         $(join(backward_lines, "\n    "))
-
-        return -1
+        return
     end"""
 
     return forward_func, dfs_func
@@ -124,13 +123,12 @@ end
 function part_two(input)
     _, b, c, program = get_info(input)
     dfs_func = getfield(@__MODULE__, Symbol("dfs_$(hash(program))"))
+    output = Int[]
     for i in 0:7
-        ans = Base.invokelatest(dfs_func, i, b, c, program, length(program))
-        if ans != -1
-            return ans
-        end
+        Base.invokelatest(dfs_func, i, b, c, program, length(program), output)
     end
-    return -1
+    @debug "All possible values: $output"
+    return output[1]
 end
 
 @testitem "Day17" begin
