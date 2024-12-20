@@ -33,7 +33,8 @@ function solve(input)
         for (i, j) in digits[num + 1]
             for (di, dj) in [(0, 1), (1, 0), (0, -1), (-1, 0)]
                 if 1 <= i + di <= n && 1 <= j + dj <= m && grid[i + di, j + dj] == num + 1
-                    unique_endings[i, j] = union(unique_endings[i, j], unique_endings[i + di, j + dj])
+                    unique_endings[i, j] = union(
+                        unique_endings[i, j], unique_endings[i + di, j + dj])
                     number_routes[i, j] += number_routes[i + di, j + dj]
                 end
             end

@@ -12,7 +12,7 @@ function solve(input; rep)
     for stone in stones
         cnt[stone] += 1
     end
-    
+
     for _ in 1:rep
         new_stones = DefaultDict{Int, Int}(0)
         for stone in keys(cnt)
@@ -33,8 +33,8 @@ function solve(input; rep)
     return sum(values(cnt))
 end
 
-part_one(input) = solve(input; rep=25)
-part_two(input) = solve(input; rep=75)
+part_one(input) = solve(input; rep = 25)
+part_two(input) = solve(input; rep = 75)
 
 @testitem "Day11" begin
     using AdventOfCode: get_input

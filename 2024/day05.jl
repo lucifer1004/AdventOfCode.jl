@@ -11,7 +11,7 @@ function solve(input)
     idx = findfirst(x -> x == "", lines)
     rule_lines = lines[1:(idx - 1)]
     num_lines = lines[(idx + 1):end]
-    
+
     rules = Dict{Int, Set{Int}}()
     for line in rule_lines
         a, b = parse.(Int, split(line, "|"))
@@ -23,7 +23,7 @@ function solve(input)
     for line in num_lines
         unordered_nums = parse.(Int, split(line, ","))
         push!(nums, unordered_nums)
-        
+
         unordered_nums_set = Set(unordered_nums)
         to = Dict{Int, Int}()
         for num in unordered_nums
@@ -64,12 +64,14 @@ get_score(nums) = nums[(firstindex(nums) + lastindex(nums)) ÷ 2]
 
 function part_one(input)
     nums, correct_order = solve(input)
-    return sum(get_score(correct_order[i]) for i in eachindex(nums) if all(correct_order[i] .== nums[i]))
+    return sum(get_score(correct_order[i])
+    for i in eachindex(nums) if all(correct_order[i] .== nums[i]))
 end
 
 function part_two(input)
     nums, correct_order = solve(input)
-    return sum(get_score(correct_order[i]) for i in eachindex(nums) if any(correct_order[i] .!= nums[i]))
+    return sum(get_score(correct_order[i])
+    for i in eachindex(nums) if any(correct_order[i] .!= nums[i]))
 end
 
 @testitem "Day05" begin

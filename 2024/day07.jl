@@ -51,8 +51,8 @@ function solve(input; ops)
     return ans.x
 end
 
-part_one(input) = solve(input; ops=2)
-part_two(input) = solve(input; ops=3)
+part_one(input) = solve(input; ops = 2)
+part_two(input) = solve(input; ops = 3)
 
 @testitem "Day07" begin
     using AdventOfCode: get_input

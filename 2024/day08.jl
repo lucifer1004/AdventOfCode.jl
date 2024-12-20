@@ -26,9 +26,10 @@ end
 function part_one(input)
     n, m, visible = get_info(input)
     st = Set{Tuple{Int, Int}}()
-    check!(x, y) = if x >= 1 && y >= 1 && x <= n && y <= m
-        push!(st, (x, y))
-    end
+    check!(x, y) =
+        if x >= 1 && y >= 1 && x <= n && y <= m
+            push!(st, (x, y))
+        end
     for v in values(visible)
         k = length(v)
         for i in 1:k

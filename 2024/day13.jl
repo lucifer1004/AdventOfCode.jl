@@ -27,7 +27,7 @@ struct Problem
     py::Int
 end
 
-function get_problems(input; offset=0)
+function get_problems(input; offset = 0)
     lines = split(input, "\n")
     n = length(lines)
     problems = Problem[]
@@ -35,13 +35,14 @@ function get_problems(input; offset=0)
         ax, ay = parse_button(lines[i])
         bx, by = parse_button(lines[i + 1])
         px, py = parse_prize(lines[i + 2])
-        push!(problems, Problem(ax, ay, bx, by, px+offset, py+offset))
+        push!(problems, Problem(ax, ay, bx, by, px + offset, py + offset))
     end
     return problems
 end
 
 function solve(problem::Problem)
-    ax, ay, bx, by, px, py = problem.ax, problem.ay, problem.bx, problem.by, problem.px, problem.py
+    ax, ay, bx, by, px, py = problem.ax, problem.ay, problem.bx, problem.by, problem.px,
+    problem.py
     cost = typemax(Int)
     if ax * by == ay * bx # collinear
         if ax * py == ay * px && px >= ax
@@ -51,7 +52,7 @@ function solve(problem::Problem)
             cost = min(cost, px ÷ bx)
         end
     else
-        if (ax * py - ay * px) % (ax * by - ay * bx) == 0 
+        if (ax * py - ay * px) % (ax * by - ay * bx) == 0
             b = (ax * py - ay * px) ÷ (ax * by - ay * bx)
             if (ay * px - ay * bx * b) % (ax * ay) == 0
                 a = (ay * px - ay * bx * b) ÷ (ax * ay)
@@ -65,7 +66,7 @@ function solve(problem::Problem)
 end
 
 part_one(input) = sum(solve.(get_problems(input)))
-part_two(input) = sum(solve.(get_problems(input, offset=10000000000000)))
+part_two(input) = sum(solve.(get_problems(input, offset = 10000000000000)))
 
 @testitem "Day13" begin
     using AdventOfCode: get_input

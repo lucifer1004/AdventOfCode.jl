@@ -15,7 +15,8 @@ function get_info(input)
     return positions
 end
 
-function shortest_path(h::Int, w::Int, positions::AbstractVector{Tuple{Int, Int}}, t::Int, start::Tuple{Int, Int}, target::Tuple{Int, Int})
+function shortest_path(h::Int, w::Int, positions::AbstractVector{Tuple{Int, Int}},
+        t::Int, start::Tuple{Int, Int}, target::Tuple{Int, Int})
     grid = fill(true, h, w)
     for i in 1:t
         grid[positions[i][1], positions[i][2]] = false

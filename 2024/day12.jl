@@ -68,7 +68,7 @@ function solve(input)
             push!(info, (area, border_length, sides))
         end
     end
-    
+
     return info
 end
 

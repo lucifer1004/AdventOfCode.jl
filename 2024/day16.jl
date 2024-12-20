@@ -7,7 +7,7 @@ const YEAR = parse(Int, splitdir(@__DIR__)[end])
 const DAY = parse(Int, match(r"day(\d+).jl", basename(@__FILE__))[1])
 const DIRS = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
-function solve(input; move_cost=1, turn_cost=1000)
+function solve(input; move_cost = 1, turn_cost = 1000)
     lines = split(input, '\n')
     n = length(lines)
     m = length(lines[1])
@@ -22,7 +22,7 @@ function solve(input; move_cost=1, turn_cost=1000)
         return [
             (x + dx, y + dy, dir, move_cost),
             (x, y, mod1(dir + 1, 4), turn_cost),
-            (x, y, mod1(dir - 1, 4), turn_cost),
+            (x, y, mod1(dir - 1, 4), turn_cost)
         ]
     end
 
@@ -69,7 +69,7 @@ function solve(input; move_cost=1, turn_cost=1000)
             end
         end
     end
-    
+
     visited_cells = Set{Tuple{Int, Int}}([(x, y) for (x, y, dir) in visited])
     return min_dist, length(visited_cells)
 end

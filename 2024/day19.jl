@@ -20,7 +20,8 @@ function solve(input)
         for i in 1:m
             if can[i]
                 for pattern in patterns
-                    if i + length(pattern) <= m + 1 && line[i:i + length(pattern) - 1] == pattern
+                    if i + length(pattern) <= m + 1 &&
+                       line[i:(i + length(pattern) - 1)] == pattern
                         can[i + length(pattern)] = true
                         dp[i + length(pattern)] += dp[i]
                     end
