@@ -3,4 +3,4 @@
 .vscode
 Manifest.toml
 
-*_draft.jl
+*_draft*.jl
