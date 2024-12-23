@@ -5,7 +5,7 @@ for day in 1:13
     include(filename)
 end
 
-for day in 16:22
+for day in 16:23
     filename = joinpath(@__DIR__, "..", "2024", "day$(lpad(day, 2, '0')).jl")
     include(filename)
 end
