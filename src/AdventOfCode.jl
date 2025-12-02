@@ -62,5 +62,6 @@ include("AoC2016.jl")
 include("AoC2019.jl")
 include("AoC2023.jl")
 include("AoC2024.jl")
+include("AoC2025.jl")
 
 end

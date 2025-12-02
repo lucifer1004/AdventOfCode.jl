@@ -4,3 +4,4 @@
 Manifest.toml
 
 *_draft*.jl
+.DS_Store
