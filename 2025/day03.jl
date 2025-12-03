@@ -6,13 +6,13 @@ using ..AoC2025
 const YEAR = parse(Int, splitdir(@__DIR__)[end])
 const DAY = parse(Int, match(r"day(\d+).jl", basename(@__FILE__))[1])
 
-function solve(line; digits=2)
+function solve(line; digits = 2)
     hi = fill(-1, digits)
     for ch in line
         now = ch - '0'
         for i in digits:-1:2
-            if hi[i-1] >= 0
-                hi[i] = max(hi[i], hi[i-1] * 10 + now)
+            if hi[i - 1] >= 0
+                hi[i] = max(hi[i], hi[i - 1] * 10 + now)
             end
         end
         hi[1] = max(hi[1], now)
@@ -27,7 +27,7 @@ end
 
 function part_two(input)
     lines = split(input, '\n')
-    sum(solve.(lines; digits=12))
+    sum(solve.(lines; digits = 12))
 end
 
 @testitem "Day03" begin
@@ -50,4 +50,3 @@ end
 end
 
 end
-

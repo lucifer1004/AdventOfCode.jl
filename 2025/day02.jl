@@ -44,7 +44,7 @@ end
 const REPEATING_NUMS, REPEATING_SUM = let
     nums = Int[]
     for t in 2:10  # digit count
-        for j in 1:t÷2  # period length
+        for j in 1:(t ÷ 2)  # period length
             t % j == 0 || continue
             mult = (10^t - 1) ÷ (10^j - 1)  # 10101... pattern
             lo = j == 1 ? 1 : 10^(j - 1)
@@ -92,4 +92,3 @@ end
 end
 
 end
-
