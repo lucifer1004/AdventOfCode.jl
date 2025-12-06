@@ -9,21 +9,21 @@ const DAY = parse(Int, match(r"day(\d+).jl", basename(@__FILE__))[1])
 function parse_input(input)
     lines = split(input, '\n')
     sep = findfirst(==(""), lines)
-    
-    ranges = [Tuple(parse.(Int, split(line, "-"))) for line in lines[1:sep-1]]
-    numbers = [parse(Int, line) for line in lines[sep+1:end]]
-    
+
+    ranges = [Tuple(parse.(Int, split(line, "-"))) for line in lines[1:(sep - 1)]]
+    numbers = [parse(Int, line) for line in lines[(sep + 1):end]]
+
     ranges, numbers
 end
 
 # Sort and merge overlapping ranges → O(m log m)
 function merge_ranges(ranges)
-    isempty(ranges) && return Tuple{Int,Int}[]
-    
+    isempty(ranges) && return Tuple{Int, Int}[]
+
     sorted = sort(ranges)
-    merged = Tuple{Int,Int}[]
+    merged = Tuple{Int, Int}[]
     left, right = sorted[1]
-    
+
     for (l, r) in sorted[2:end]
         if l > right + 1
             push!(merged, (left, right))
@@ -39,11 +39,11 @@ end
 # Two-pointer: count numbers covered by merged ranges → O(n log n + m)
 function count_covered(merged, numbers)
     isempty(merged) && return 0
-    
+
     sorted_nums = sort(numbers)
     ans = 0
     j = 1  # pointer into merged ranges
-    
+
     for num in sorted_nums
         # Advance range pointer until we find a range that could contain num
         while j <= length(merged) && merged[j][2] < num
@@ -98,4 +98,3 @@ end
 end
 
 end
-

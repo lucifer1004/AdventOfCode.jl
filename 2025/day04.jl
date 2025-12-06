@@ -25,6 +25,7 @@ function neighbor_counts!(nei, arr)
     fill!(nei, 0)
     nrow, ncol = size(arr)
     for di in -1:1, dj in -1:1
+
         (di, dj) == (0, 0) && continue
         ri = max(1, 1 + di):min(nrow, nrow + di)
         rj = max(1, 1 + dj):min(ncol, ncol + dj)
@@ -98,4 +99,3 @@ end
 end
 
 end
-

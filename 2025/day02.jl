@@ -31,6 +31,7 @@ end
 function part_one(input)
     ans = 0
     for line in split(input, '\n'), range in split(line, ",")
+
         isempty(range) && continue
         l, r = parse.(Int, split(range, "-"))
         ans += ACC[bsearch(r + 1)] - ACC[bsearch(l)]
@@ -48,7 +49,7 @@ const REPEATING_NUMS, REPEATING_SUM = let
             t % j == 0 || continue
             mult = (10^t - 1) ÷ (10^j - 1)  # 10101... pattern
             lo = j == 1 ? 1 : 10^(j - 1)
-            for pattern in lo:(10^j - 1)
+            for pattern in lo:(10 ^ j - 1)
                 push!(nums, pattern * mult)
             end
         end
@@ -66,6 +67,7 @@ end
 function part_two(input)
     ans = 0
     for line in split(input, '\n'), range in split(line, ",")
+
         isempty(range) && continue
         l, r = parse.(Int, split(range, "-"))
         ans += sum_repeating(l, r)
