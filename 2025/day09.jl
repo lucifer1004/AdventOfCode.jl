@@ -104,24 +104,31 @@ Proof sketch:
 =#
 
 # Ray casting: point inside polygon (including boundary)
+# Uses integer arithmetic for exact computation (no floating-point errors)
 function point_in_polygon(px, py, poly)
     n = length(poly)
     inside = false
     j = n
     @inbounds for i in 1:n
-        xi, yi = Float64(poly[i][1]), Float64(poly[i][2])
-        xj, yj = Float64(poly[j][1]), Float64(poly[j][2])
+        xi, yi = poly[i][1], poly[i][2]
+        xj, yj = poly[j][1], poly[j][2]
 
-        # Point on edge?
+        # Point on edge? (cross product == 0 and within bounding box)
         cross = (px - xi) * (yj - yi) - (py - yi) * (xj - xi)
-        if abs(cross) < 1e-9 && min(xi, xj) <= px <= max(xi, xj) &&
+        if cross == 0 && min(xi, xj) <= px <= max(xi, xj) &&
            min(yi, yj) <= py <= max(yi, yj)
             return true
         end
 
-        # Ray crossing
-        if ((yi > py) != (yj > py)) && (px < (xj - xi) * (py - yi) / (yj - yi) + xi)
-            inside = !inside
+        # Ray crossing (integer multiplication instead of division)
+        if (yi > py) != (yj > py)
+            lhs = (px - xi) * (yj - yi)
+            rhs = (xj - xi) * (py - yi)
+            # Sign of (yj - yi) determines inequality direction
+            crosses = (yj > yi) ? (lhs < rhs) : (lhs > rhs)
+            if crosses
+                inside = !inside
+            end
         end
         j = i
     end
@@ -144,7 +151,7 @@ end
 function rect_inside_polygon(xlo, ylo, xhi, yhi, poly)
     # Condition 1: all 4 corners inside polygon
     for (x, y) in ((xlo, ylo), (xhi, ylo), (xhi, yhi), (xlo, yhi))
-        point_in_polygon(Float64(x), Float64(y), poly) || return false
+        point_in_polygon(x, y, poly) || return false
     end
 
     # Condition 2: no edge of rectangle properly intersects polygon edges
@@ -158,10 +165,9 @@ function rect_inside_polygon(xlo, ylo, xhi, yhi, poly)
     @inbounds for (x1, y1, x2, y2) in rect_edges
         for i in 1:n
             j = mod1(i + 1, n)
-            px1, py1 = Float64(poly[i][1]), Float64(poly[i][2])
-            px2, py2 = Float64(poly[j][1]), Float64(poly[j][2])
-            if segments_cross(Float64(x1), Float64(y1), Float64(x2), Float64(y2),
-                px1, py1, px2, py2)
+            px1, py1 = poly[i][1], poly[i][2]
+            px2, py2 = poly[j][1], poly[j][2]
+            if segments_cross(x1, y1, x2, y2, px1, py1, px2, py2)
                 return false
             end
         end
