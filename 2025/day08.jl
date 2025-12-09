@@ -32,7 +32,7 @@ function part_one(input; connections = 1000)
     boxes = parse_boxes(input)
     n = size(boxes, 1)
 
-    edges = [(dist_sq(boxes, i, j), i, j) for i in 1:n for j in i+1:n]
+    edges = [(dist_sq(boxes, i, j), i, j) for i in 1:n for j in (i + 1):n]
     partialsort!(edges, 1:connections)
 
     ds = DisjointSets{Int}(1:n)
@@ -57,7 +57,7 @@ function part_two(input)
     dist[1] = 0
 
     # Collect all MST edges
-    mst_edges = Vector{Tuple{Int,Int,Int}}()
+    mst_edges = Vector{Tuple{Int, Int, Int}}()
     sizehint!(mst_edges, n - 1)
 
     @inbounds for _ in 1:n

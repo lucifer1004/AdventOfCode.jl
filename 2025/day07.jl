@@ -64,12 +64,12 @@ function part_one(input)
     grid = split(input, '\n')
     H, W = length(grid), length(grid[1])
     sr, sc = find_start(grid)
-    
+
     reachable = falses(W)
     reachable[sc] = true
     counted = falses(H, W)
     trees = 0
-    
+
     for r in sr:(H - 1)
         next_reach = falses(W)
         for c in 1:W
@@ -96,10 +96,10 @@ function part_two(input)
     grid = split(input, '\n')
     H, W = length(grid), length(grid[1])
     sr, sc = find_start(grid)
-    
+
     curr, next = zeros(Int, W), zeros(Int, W)
     curr[sc] = 1
-    
+
     for r in sr:(H - 1)
         fill!(next, 0)
         for c in 1:W
