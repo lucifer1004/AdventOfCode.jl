@@ -35,7 +35,7 @@ function part_one(input)
     max_area = 1
     @inbounds for i in 1:n
         xi, yi = xs[i], ys[i]
-        for j in i+1:n  # Upper triangle only (symmetric)
+        for j in (i + 1):n  # Upper triangle only (symmetric)
             area = (abs(xi - xs[j]) + 1) * (abs(yi - ys[j]) + 1)
             max_area = max(max_area, area)
         end
@@ -60,7 +60,8 @@ function part_two(input)
     max_area = 0
     eps = 1e-9  # Epsilon inset for strict interior check
 
-    for i in 1:n, j in i+1:n
+    for i in 1:n, j in (i + 1):n
+
         p, q = points[i], points[j]
         xlo, xhi = minmax(p[1], q[1])
         ylo, yhi = minmax(p[2], q[2])
@@ -74,7 +75,7 @@ function part_two(input)
             (Float64(xhi) - eps, Float64(ylo) + eps),
             (Float64(xhi) - eps, Float64(yhi) - eps),
             (Float64(xlo) + eps, Float64(yhi) - eps),
-            (Float64(xlo) + eps, Float64(ylo) + eps),
+            (Float64(xlo) + eps, Float64(ylo) + eps)
         ]
         rect = GI.Polygon([rect_coords])
 
@@ -159,7 +160,7 @@ function rect_inside_polygon(xlo, ylo, xhi, yhi, poly)
         (xlo, ylo, xhi, ylo),
         (xhi, ylo, xhi, yhi),
         (xhi, yhi, xlo, yhi),
-        (xlo, yhi, xlo, ylo),
+        (xlo, yhi, xlo, ylo)
     )
     n = length(poly)
     @inbounds for (x1, y1, x2, y2) in rect_edges
@@ -180,7 +181,8 @@ function part_two_no_geo(input)
     n = length(points)
 
     max_area = 0
-    for i in 1:n, j in i+1:n
+    for i in 1:n, j in (i + 1):n
+
         p, q = points[i], points[j]
         xlo, xhi = minmax(p[1], q[1])
         ylo, yhi = minmax(p[2], q[2])
